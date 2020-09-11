@@ -1,2 +1,46 @@
-#Google Cloud Fundamentals: Getting Started with Compute Engine
+#Google Cloud Fundamentals: Getting Started with Compute engine 
 ##Objetives
+In this lab, you will learn how to perform the following 
+- create a compute engine 
+- create a compute engine using gcloud command line interface .
+- connect between the two instance .
+
+
+##Steps
+1. Create a compute Engine Vitual machine on GCP console.
+  gcloud compute instance create my-vm-1 --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-strech-v2019021" --subnet "default --tags "http"
+  gcloud compute firewall-rule create allow-http --action=ALLOW --destination =INGRESS --rules =http:80 --target-tags = http
+2. Create Engine
+    gcloud config set compute/zone us-central1-b
+    gcloud compute instance create my-vm-2 --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-stretch-v20190213" --subnet "default"
+    
+3. Connect between the two instances 
+  i) Use the ping command to confirm that my-vm-2 can be reached by my-vm-1 over the network:
+        - connect to my-vm-2 
+            gcloud compute ssh my-vm-2
+            
+         - Ping my-vm-1 from my-vm-2
+           ping -c 4 my-vm-1
+         -use the ssh expand to open 
+             ssh my-vm-1
+          - At the command prompt on my-vm-1, install Nginx server
+          sudo apt-get install nginx-light -y 
+          - use 
+          sudo nano /var/www/html/index.nginx-debian.html
+          -add text 
+          Hi from George.
+          -Exit the editor and confirm that the web server is serving 
+          curl http://localhost/
+          - the result will be displayed 
+          
+          - to exit 
+          exit 
+          - To confirm that my-vm-2 can be reach the we server 
+          curl http://my-vm-1
+            Result : the reseponse will again be the HTML source of the web server home page 
+    ii) Now get the external IP of the my-vm-1 instance fron the command line 
+     gcloud compute instance list --zone us-central1-a
+     
+     iii) Paste the copied IP address of the my-vm-1 into a new browser 
+     
+     - Result : you will see your web servers homepage , including your custom text.
